@@ -35,7 +35,7 @@ async function insertUser(data){
 async function insertOTP(data){
     try {
         query = util.promisify(connection.query).bind(connection);
-        await query('INSERT INTO OTP SET ?', [data]);
+        await query('INSERT INTO otp SET ?', [data]);
     } catch (error) {
         console.log(error);
     }
