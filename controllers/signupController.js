@@ -159,7 +159,7 @@ async function resendOTP(req,res){
 }
 
 async function signUpGmail(req,res){
-  res.redirect('http://localhost:3000/auth/google');
+  res.redirect('https://winway.onrender.com/auth/google');
 }
 
 
