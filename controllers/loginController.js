@@ -34,11 +34,11 @@ async function login(req, res, next) {
 }
 
 async function facebookLogin(req,res){
-  res.redirect('http://localhost:3000/facebook');
+  res.redirect('https://winway.onrender.com/facebook');
 }
 
 async function gmailLogin(req,res){
-  res.redirect('http://localhost:3000/auth/google');
+  res.redirect('https://winway.onrender.com/auth/google');
 }
 
 module.exports = { login, facebookLogin, gmailLogin};
