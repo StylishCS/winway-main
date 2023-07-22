@@ -1,6 +1,5 @@
 const { body, validationResult } = require("express-validator");
 const upload= require('../middleware/uploadFiles'); 
-const { isDate } = require("util/types");
 
   function validate() {
     return [
@@ -11,7 +10,6 @@ const { isDate } = require("util/types");
         .isString()
         .withMessage("Please enter a valid course name"),
       body("phone").isMobilePhone(),
-      body("birthday").isDate(),
       body("country"),
       body("gender"),
       (req, res, next) => {

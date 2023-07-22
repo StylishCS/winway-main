@@ -93,7 +93,7 @@ app.use(express.static("upload"));
 app.use('/', homeRouter);
 app.use('/signup', signupRouter);
 app.use('/login', loginRouter);
-app.use('/courseRouter', courseRouter)
+app.use('/courses', courseRouter)
 app.use('/videos', videos)
 app.use('/reviews',reviewRouter)
 app.use('/quizs',quizs)
