@@ -39,7 +39,7 @@ const passport = require('passport');
 
 router.get('/', passport.authenticate('facebook', {
     successRedirect: "https://winway.onrender.com/signup/facebook",
-    failureRedirect: "/login/failed",
+    failureRedirect: "https://winway.onrender.com/login/failed",
 })
 );
 
