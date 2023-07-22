@@ -61,7 +61,7 @@ const { validate } = require("../validation/coursesValidation");
  * tags:
  *  name: Courses
  *  description: The Courses managing API, you need to be logged in to access this page
- * /courseRouter/createCourse:
+ * /courses/createCourse:
  *   post:
  *     summary: Create a new course
  *     tags: [Courses]
@@ -111,7 +111,7 @@ const { validate } = require("../validation/coursesValidation");
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  * 
- * /courseRouter/update/{id}:
+ * /courses/update/{id}:
  *   put:
  *     summary: Update an existing course by ID
  *     tags: [Courses]
@@ -169,7 +169,7 @@ const { validate } = require("../validation/coursesValidation");
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  * 
- * /courseRouter/deleteCourse/{id}:
+ * /courses/deleteCourse/{id}:
  *   delete:
  *     summary: Delete a course by ID
  *     tags: [Courses]
@@ -196,7 +196,7 @@ const { validate } = require("../validation/coursesValidation");
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  * 
- * /courseRouter/getCourse/{id}:
+ * /courses/getCourse/{id}:
  *   get:
  *     summary: Get a course by ID
  *     tags: [Courses]
@@ -248,7 +248,7 @@ const { validate } = require("../validation/coursesValidation");
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  * 
- * /courseRouter/getCourses:
+ * /courses/getCourses:
  *   get:
  *     summary: Get all courses or seacrch for related courses
  *     tags: [Courses]
@@ -294,7 +294,7 @@ const { validate } = require("../validation/coursesValidation");
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  * 
- * /courseRouter/{collectionName}:
+ * /courses/{collectionName}:
  *   get:
  *     summary: Get all courses from a specific collection
  *     tags: [Courses]
