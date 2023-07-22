@@ -21,7 +21,7 @@ passport.use(
         {
             clientID: process.env.CLIENT_ID_FACEBOOK,
             clientSecret: process.env.CLIENT_SECRET_FACEBOOK,
-            callbackURL: "https://winway.onrender.com/facebook",
+            callbackURL: "/facebook",
             profileFields: ['emails', 'displayName', 'name', 'picture']
         },
         function(accessToken, refreshToken, profile, callback){
