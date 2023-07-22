@@ -8,7 +8,7 @@ const db_config = {
   port: "3306",
 };
 
-const connection = mysql.createConnection({
+let connection = mysql.createConnection({
   host: "bykoxpxsybzqzwzbmww8-mysql.services.clever-cloud.com",
   user: "u4ptjd6izxqtlgbq",
   password: "rQq9qDfi7NrQAFtGg1LW",
