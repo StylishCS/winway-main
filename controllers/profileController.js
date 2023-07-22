@@ -34,12 +34,12 @@ async function update(req, res) {
       }
 
       const profileObj = {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        phone: req.body.phone,
-        country: req.body.country,
-        gender: req.body.gender,
-        birthday: req.body.birthday,
+        firstname: req.body.firstname||profile[0].firstname,
+        lastname: req.body.lastname||profile[0].lastname,
+        phone: req.body.phone||profile[0].phone,
+        country: req.body.country||profile[0].country,
+        gender: req.body.gender||profile[0].gender,
+        birthday: req.body.birthday||profile[0].birthday,
       };
 
       if (req.file) {
