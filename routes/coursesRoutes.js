@@ -373,7 +373,7 @@ router.put(
 
 router.delete("/deleteCourse/:id", protect,validate(), deleteC);
 
-router.get("/getCourse/:id", protect, validate(), showCourse);
+router.get("/getCourse/:id", validate(), showCourse);
 
 router.get("/getCourses",protect, validate(), showCourses);
 

@@ -13,10 +13,17 @@ const {connection} = require('../db/dbConnection');
     await query("UPDATE videos SET ? WHERE id = ?", [videoObj, id]);
   }
 
-  async function createVideo(videoObj) {
+  async function createVideo(videoObj, module_id) {
     const query = util.promisify(connection.query).bind(connection);
+    const check = await query("select * from videos where id = ? and module_id = ?", [videoObj.id, module_id]);
+    if(!check.length > 0) {
     await query("insert into videos set ? ", [videoObj]);
+    return "Video created successfully"
+  }else{
+    "video already exists"
   }
+  }
+
 
 
   async function checkCourse(id){
@@ -35,4 +42,12 @@ const {connection} = require('../db/dbConnection');
     return await query("select * from videos");
   }
 
-module.exports = {getVideoById, updateVideo, deleteVideo, createVideo, showvideos, checkCourse}
+  async function getModule(id, course_id){
+    const query = util.promisify(connection.query).bind(connection)
+    const module = await query("SELECT * FROM modulecourses WHERE id = ? and course_id =?" ,[id, course_id])
+    return module
+}
+
+
+
+module.exports = {getVideoById, updateVideo, deleteVideo, createVideo, showvideos, checkCourse, getModule}

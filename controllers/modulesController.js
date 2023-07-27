@@ -6,6 +6,7 @@ const { getCourseById } = require("../services/coursesServices")
 
 async function addModule (req,res){
     try{
+       
         const course = await getCourseById(req.params.course_id)
 
         if(!course.length > 0){
@@ -16,13 +17,19 @@ async function addModule (req,res){
             size:req.body.size,
             course_id: course[0].id
         };
-        await createModule(moduleObj)
-        res.status(200).json({
-            msg: "Module created",
+        const module= await createModule(moduleObj)
+        if(module== "created")
+        {
+        res.json({
+            module
+          });
+        }
+        res.status(403).json({
+            module
           });
     }catch (err) {
         console.error(err);
-        res.status(500).json({ errors: ["Internal server error"] });
+        // res.status(500).json({ errors: ["Internal server error"] });
       }
 }
 
@@ -50,14 +57,14 @@ async function getModuleOne (req,res){
             video.fileName= "http://" + req.hostname + ":3000/" + video.fileName;        
           });
 
-        res.status(200).json({data:module,media:videos});
+        res.status(200).json(videos);
 
     }
     } catch (err) {
         console.error(err);
         res.status(500).json({ errors: ["Internal server error"] });
     }
-}       
+}
 async function deleteM(req,res){
     try {
       
@@ -69,7 +76,8 @@ async function deleteM(req,res){
         res.status(200).json({ msg: "Module Deleted successfully",});
 
     } catch (err) {
-        res.status(500).json({ errors: ["Internal server error"] });
+        // console.error(err);
+        // res.status(500).json({ errors: ["Internal server error"] });
     }
 }
 module.exports={addModule , getModules , getModuleOne , deleteM}
