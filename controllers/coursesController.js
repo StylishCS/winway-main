@@ -84,8 +84,8 @@ async function create(req, res) {
       msg: "Course created successfully",
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json(err);
+    // console.error(err);
+    res.status(500).json({ errors: ["Internal server error"] });
   }
 }
 
