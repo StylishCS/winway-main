@@ -355,7 +355,7 @@ const { validate } = require("../validation/coursesValidation");
 
 router.post(
   "/createCourse",
-  protect,
+  // protect,
   upload.single("image"),
   validate(),
   create
