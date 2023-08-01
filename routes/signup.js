@@ -68,6 +68,19 @@
  *     post:
  *       summary: resend OTP
  *       tags: [Signup]
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 email:
+ *                   type: string
+ *                   description: The user's email address
+ *                   format: email
+ *               required:
+ *                 - email
  *       responses:
  *          '200':
  *              description: OK
