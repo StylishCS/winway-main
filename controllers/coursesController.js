@@ -9,10 +9,7 @@ const {
   searchCourses,
   getCollectionname,
 } = require("../services/coursesServices");
-const { getRating, showvideos} = require('../services/studentServices')
-
-
-
+const { getRating, showvideos } = require("../services/studentServices");
 
 async function update(req, res) {
   try {

@@ -1,7 +1,11 @@
 var express = require("express");
 var router = express.Router();
-const {addToCart , removeFromCart, getCart}= require('../controllers/cartController')
-const {protect} = require('../middleware/protect');
+const {
+  addToCart,
+  removeFromCart,
+  getCart,
+} = require("../controllers/cartController");
+const { protect } = require("../middleware/protect");
 
 /**
  * @swagger
@@ -124,11 +128,10 @@ const {protect} = require('../middleware/protect');
  *         num_of_videos_watched:
  *           type: number
  *           description: Number of videos watched from the course
-*/ 
+ */
 
+router.post("/:studentId", protect, getCart);
+router.post("/addCourse/:courseId/:studentId", protect, addToCart);
+router.post("/removeCourse/:courseId/:studentId", protect, removeFromCart);
 
-router.post('/:studentId',protect,getCart);
-router.post('/addCourse/:courseId/:studentId',protect,addToCart)
-router.post('/removeCourse/:courseId/:studentId',protect,removeFromCart)
-
-module.exports = router
+module.exports = router;

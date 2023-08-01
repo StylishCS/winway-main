@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const {protect} = require('../middleware/protect');
+const { protect } = require("../middleware/protect");
 const upload = require("../middleware/uploadFiles");
 const {
   update,
@@ -8,7 +8,7 @@ const {
   deleteC,
   showCourse,
   showCourses,
-  getCollectioName
+  getCollectioName,
 } = require("../controllers/coursesController");
 const { validate } = require("../validation/coursesValidation");
 
@@ -43,7 +43,7 @@ const { validate } = require("../validation/coursesValidation");
  *           type: string
  *         level:
  *           type: string
- *         
+ *
  *     ErrorResponse:
  *       type: object
  *       properties:
@@ -110,7 +110,7 @@ const { validate } = require("../validation/coursesValidation");
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
- * 
+ *
  * /courses/update/{id}:
  *   put:
  *     summary: Update an existing course by ID
@@ -154,7 +154,7 @@ const { validate } = require("../validation/coursesValidation");
  *                 type: string
  *               level:
  *                 type: string
- *                
+ *
  *     responses:
  *       '200':
  *         description: OK
@@ -168,7 +168,7 @@ const { validate } = require("../validation/coursesValidation");
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
- * 
+ *
  * /courses/deleteCourse/{id}:
  *   delete:
  *     summary: Delete a course by ID
@@ -195,7 +195,7 @@ const { validate } = require("../validation/coursesValidation");
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
- * 
+ *
  * /courses/getCourse/{id}:
  *   get:
  *     summary: Get a course by ID
@@ -247,7 +247,7 @@ const { validate } = require("../validation/coursesValidation");
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
- * 
+ *
  * /courses/getCourses:
  *   get:
  *     summary: Get all courses or seacrch for related courses
@@ -286,14 +286,14 @@ const { validate } = require("../validation/coursesValidation");
  *                  type: string
  *                level:
  *                  type: string
- *               
+ *
  *       '400':
  *         description: Bad Request
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
- * 
+ *
  * /courses/{collectionName}:
  *   get:
  *     summary: Get all courses from a specific collection
@@ -345,7 +345,7 @@ const { validate } = require("../validation/coursesValidation");
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
- * 
+ *
  * securitySchemes:
  *   bearerAuth:
  *     type: http
@@ -353,34 +353,25 @@ const { validate } = require("../validation/coursesValidation");
  *     bearerFormat: JWT
  */
 
-
-
 router.post(
   "/createCourse",
   protect,
-  upload.single('image'),
+  upload.single("image"),
   validate(),
   create
 );
 
-router.put(
-  "/update/:id",
-  protect,
-  upload.single('image'),
-  validate(),
-  update
-);
+router.put("/update/:id", protect, upload.single("image"), validate(), update);
 
-router.delete("/deleteCourse/:id", protect,validate(), deleteC);
+router.delete("/deleteCourse/:id", protect, validate(), deleteC);
 
-router.get("/getCourse/:id", validate(), showCourse);
+router.get("/getCourse/:id", protect, validate(), showCourse);
 
-router.get("/getCourses",protect, validate(), showCourses);
+router.get("/getCourses", protect, validate(), showCourses);
 
 router.get("/:collectionName", protect, validate(), getCollectioName);
 
 module.exports = router;
-
 
 // upload.fields([
 //   { name: "image", maxCount: 1 },
