@@ -6,7 +6,7 @@
  *   version: 1.0.0
  *   description: API for managing videos
  * paths:
- *   /videos/create/{course_id}:
+ *   /videos/create/{course_id}/{module_id}:
  *     post:
  *       summary: Create a new video for a course
  *       tags: [Videos]
