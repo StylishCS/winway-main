@@ -159,7 +159,7 @@ async function showCourse(req, res) {
     }
 
     if (course) {
-      course[0].image = "http://" + req.hostname + ":3000/" + course[0].image;
+      course[0].image = "https://winway.onrender.com/" + course[0].image;
       res.status(200).json(course);
     } else {
       res.status(404).json({ errors: ["No courses found"] });
@@ -175,7 +175,7 @@ async function getCollectioName(req, res) {
     const courses = await getCollectionname(req.params.collectionName);
     if (courses) {
       courses.map((course) => {
-        course.image_url = "http://" + req.hostname + ":3000/" + course.image;
+        course.image_url = "https://winway.onrender.com/" + course.image;
       });
 
       res.status(200).json(courses);
