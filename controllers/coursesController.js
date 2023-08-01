@@ -72,7 +72,6 @@ async function create(req, res) {
       features: req.body.features,
       image: req.file.filename, // Use the filename of the uploaded image
       mentor_id: req.body.mentor_id,
-      // videos: req.files.videos[0].filename, // Use the filename of the uploaded video
       collectionName: req.body.collectionName,
     };
 
