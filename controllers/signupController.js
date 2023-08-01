@@ -1,10 +1,10 @@
 const bcrypt = require("bcrypt");
 var passwordValidator = require("password-validator");
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 var schema = new passwordValidator();
-const express = require("express");
+const express = require('express');
 const app = express();
-const { nanoid } = require("nanoid");
+const { nanoid } =  require('nanoid');
 const {
   getEmail,
   insertUser,
@@ -13,10 +13,10 @@ const {
   insertToken,
   getUser,
   getEmailInfo,
-  deleteOTP,
+  deleteOTP
 } = require("../services/signupService");
 const nodemailer = require("nodemailer");
-require("dotenv").config();
+require('dotenv').config();
 
 schema
   .is()
@@ -71,16 +71,18 @@ async function postSignup(req, res) {
         text: `otp is ${otp}`,
         html: `<p>otp is<br> <h1>${otp}</h1></p>`,
       };
-      otp = bcrypt.hashSync(String(otp), 10);
-      await transporter.sendMail(message).catch((error) => {
-        console.log(error);
-      });
+      otp = bcrypt.hashSync(String(otp),10);
+      await transporter
+        .sendMail(message)
+        .catch((error) => {
+          console.log(error);
+        });
 
-      const d = new Date();
+      const d = new Date;
       d.setMinutes(d.getMinutes());
-      const d2 = new Date();
-      d2.setMinutes(d2.getMinutes() + 1);
-
+      const d2 = new Date;
+      d2.setMinutes(d2.getMinutes()+1);
+        
       let obj2 = {
         otp: otp,
         createdAt: Number(d),
@@ -92,14 +94,14 @@ async function postSignup(req, res) {
       ////////////////////////////
       await insertUser(obj);
       const id = await getId(obj.email);
-      const token = await jwt.sign({ userId: id }, process.env.JWT_SECRET_KEY, {
-        expiresIn: process.env.JWT_EXPIRE_TIME,
-      });
-      app.use((req, res, next) => {
-        req.headers["Authorization"] = `Bearer ${token}`;
+      const token = await jwt.sign({userId: id}, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_EXPIRE_TIME
+      })
+      app.use((req,res,next)=>{
+        req.headers['Authorization'] = `Bearer ${token}`;
         next();
-      });
-      res.status(201).json({ data: obj, token });
+      })
+      res.status(201).json({data: obj, token});
     } else {
       return res.status(400).json({ msg: "Email already exist" });
     }
@@ -108,10 +110,10 @@ async function postSignup(req, res) {
   }
 }
 
-async function resendOTP(req, res) {
+async function resendOTP(req,res){
   const user = await getEmailInfo(req.body.email);
-  if (user == "") {
-    return res.status(404).json({ msg: "user not found..." });
+  if(user==""){
+    return res.status(404).json({msg: "user not found..."})
   }
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -132,16 +134,18 @@ async function resendOTP(req, res) {
     text: `Your OTP is ${otp}`,
     html: `<p>otp is<br> <h1>${otp}</h1><br><h3>Your code will expire in 20 minutes</h3></p>`,
   };
-  otp = bcrypt.hashSync(String(otp), 10);
-  await transporter.sendMail(message).catch((error) => {
-    console.log(error);
-  });
+  otp = bcrypt.hashSync(String(otp),10);
+  await transporter
+    .sendMail(message)
+    .catch((error) => {
+      console.log(error);
+    });
 
-  const d = new Date();
+  const d = new Date;
   d.setMinutes(d.getMinutes());
-  const d2 = new Date();
-  d2.setMinutes(d2.getMinutes() + 20);
-
+  const d2 = new Date;
+  d2.setMinutes(d2.getMinutes()+20);
+    
   let obj2 = {
     otp: otp,
     createdAt: Number(d),
@@ -151,12 +155,13 @@ async function resendOTP(req, res) {
   };
   await deleteOTP(user[0].id);
   await insertOTP(obj2);
-  res.status(201).json({ msg: "OTP sent..." });
+  res.status(201).json({msg:"OTP sent..."});
 }
 
-async function signUpGmail(req, res) {
-  res.redirect("https://winway.onrender.com/auth/google");
+async function signUpGmail(req,res){
+  res.redirect('https://winway.onrender.com/auth/google');
 }
+
 
 async function postSignupGmail(req, res) {
   try {
@@ -172,11 +177,12 @@ async function postSignupGmail(req, res) {
       };
       await insertUser(obj);
       const id = await getId(obj.email);
-      const token = await jwt.sign({ userId: id }, process.env.JWT_SECRET_KEY, {
-        expiresIn: process.env.JWT_EXPIRE_TIME,
-      });
-      res.status(201).json({ data: obj, token });
-    } else {
+      const token = await jwt.sign({userId: id}, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_EXPIRE_TIME
+      })
+      res.status(201).json({data: obj, token});
+    }
+    else{
       let obj = {
         firstname: req.user.name.givenName,
         lastname: req.user.name.familyName,
@@ -184,10 +190,10 @@ async function postSignupGmail(req, res) {
         image: req.user.photos[0].value,
       };
       const id = await getId(obj.email);
-      const token = await jwt.sign({ userId: id }, process.env.JWT_SECRET_KEY, {
-        expiresIn: process.env.JWT_EXPIRE_TIME,
-      });
-      res.status(201).json({ data: obj, token });
+      const token = await jwt.sign({userId: id}, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_EXPIRE_TIME
+      })
+      res.status(201).json({data: obj, token});    
     }
   } catch (error) {
     console.log(error);
@@ -196,7 +202,7 @@ async function postSignupGmail(req, res) {
 
 async function postSignupFacebook(req, res) {
   try {
-    if ((await getUser(req.user.id)[0]) == "") {
+    if ((await getUser(req.user.id)[0])=="") {
       let obj = {
         firstname: req.user.name.givenName,
         lastname: req.user.name.familyName,
@@ -207,11 +213,12 @@ async function postSignupFacebook(req, res) {
       };
       await insertUser(obj);
       const id = await getId(obj.email);
-      const token = await jwt.sign({ userId: id }, process.env.JWT_SECRET_KEY, {
-        expiresIn: process.env.JWT_EXPIRE_TIME,
-      });
-      res.status(201).json({ data: obj, token });
-    } else {
+      const token = await jwt.sign({userId: id}, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_EXPIRE_TIME
+      })
+      res.status(201).json({data: obj, token});
+    }
+    else{
       let obj = {
         firstname: req.user.name.givenName,
         lastname: req.user.name.familyName,
@@ -220,20 +227,14 @@ async function postSignupFacebook(req, res) {
         password: "No password for gmail users...",
       };
       const id = await getId(obj.email);
-      const token = await jwt.sign({ userId: id }, process.env.JWT_SECRET_KEY, {
-        expiresIn: process.env.JWT_EXPIRE_TIME,
-      });
-      res.status(201).json({ data: obj, token });
+      const token = await jwt.sign({userId: id}, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_EXPIRE_TIME
+      })
+      res.status(201).json({data: obj, token});
     }
   } catch (error) {
     console.log(error);
   }
 }
 
-module.exports = {
-  postSignup,
-  postSignupGmail,
-  postSignupFacebook,
-  resendOTP,
-  signUpGmail,
-};
+module.exports = { postSignup, postSignupGmail, postSignupFacebook, resendOTP, signUpGmail };
