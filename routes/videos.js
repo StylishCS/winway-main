@@ -173,7 +173,7 @@ const { validate } = require("../validation/videosValidation");
 
 router.post(
   "/create/:course_id",
-  protect,
+  // protect,
   upload.fields([
     { name: "image", maxCount: 1 },
     { name: "fileName", maxCount: 1 },
