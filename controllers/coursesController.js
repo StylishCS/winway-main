@@ -135,7 +135,7 @@ async function showCourses(req, res) {
           name: courses[i].name,
           price: courses[i].price,
           description: courses[i].description,
-          image: `http://${req.hostname}:3000/${courses[i].image}`,
+          image: `https://winway.onrender.com/${courses[i].image}`,
           rating: rating,
           videos: videos.length,
         };
