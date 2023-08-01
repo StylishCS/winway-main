@@ -7,7 +7,7 @@ const {
   deleteQuiz,
   showquizs,
 } = require("../services/quizService");
-const{getCourseById} = require('../services/coursesServices')
+const { getCourseById } = require("../services/coursesServices");
 
 async function update(req, res) {
   try {
@@ -45,20 +45,20 @@ async function create(req, res) {
     if (!errors) {
       return res.status(400).json({ errors: "error" });
     }
-    let id = req.params.course_id
+    let id = req.params.course_id;
     console.log(id);
-    let course = getCourseById(id)
-    if(!course.length>0){
-      res.status(404).json({errors: "course not found"});
+    let course = getCourseById(id);
+    if (!course.length > 0) {
+      res.status(404).json({ errors: "course not found" });
     }
 
     // INSERT NEW Qiuz
     const quizData = {
-        question: req.body.question,
-        correct_answer: req.body.correct_answer,
-        incorrect_answers: req.body.incorrect_answers,
-        time: req.body.time,
-        course_id: id
+      question: req.body.question,
+      correct_answer: req.body.correct_answer,
+      incorrect_answers: req.body.incorrect_answers,
+      time: req.body.time,
+      course_id: id,
     };
 
     await createQuiz(quizData);
@@ -98,8 +98,8 @@ async function deleteQ(req, res) {
 async function showQuizs(req, res) {
   try {
     let quizs;
-    
-      quizs = await showquizs();
+
+    quizs = await showquizs();
     if (quizs) {
       res.status(200).json(quizs);
     } else {
@@ -119,7 +119,7 @@ async function showQuiz(req, res) {
     }
 
     if (quiz) {
-      res.status(200).json(quiz)
+      res.status(200).json(quiz);
     } else {
       res.status(404).json({ errors: ["No Quizs found"] });
     }
@@ -128,7 +128,6 @@ async function showQuiz(req, res) {
     res.status(500).json({ errors: ["Internal server error"] });
   }
 }
-
 
 module.exports = {
   update,
