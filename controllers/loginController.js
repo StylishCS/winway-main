@@ -30,7 +30,7 @@ async function login(req, res, next) {
       // result.data[0].image = "https://winway.onrender.com/" + result.data[0].image;
     res.status(200).json({data: result, token});
   } catch (error) {
-    return res.status(400).json({ msg: "The email address or mobile number you entered isn't connected to an account." });
+    return res.status(400).json(error);
   }
 }
 
