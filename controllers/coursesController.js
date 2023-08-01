@@ -73,6 +73,9 @@ async function create(req, res) {
       image: req.file.filename, // Use the filename of the uploaded image
       mentor_id: req.body.mentor_id,
       collectionName: req.body.collectionName,
+      content: req.body.content,
+      language: req.body.language,
+      level: req.body.level
     };
 
     await createCourse(courseData);
@@ -81,8 +84,8 @@ async function create(req, res) {
       msg: "Course created successfully",
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json(err);
+    // console.error(err);
+    res.status(500).json({ errors: ["Internal server error"] });
   }
 }
 

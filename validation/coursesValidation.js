@@ -16,6 +16,9 @@ const upload= require('../middleware/uploadFiles')
       body("mentor_id"),
       body("features"),
       body("collectionName"),
+      body("content"),
+      body("language"),
+      body("level"),
       (req, res, next) => {
         const errors = validationResult(req);
         req.validationErrors = () => errors.array();
