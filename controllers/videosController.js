@@ -85,8 +85,8 @@ async function create(req, res) {
       const videoData = {
         name_of_video: req.body.name_of_video,
         time_of_video: req.body.time_of_video,
-        image: req.files.image[0].filename, // Use the filename of the uploaded image
-        fileName: req.files.fileName[0].filename,
+        image: req.files.filename, // Use the filename of the uploaded image
+        fileName: req.files.filename,
         course_id: req.params.course_id, // Use the filename of the uploaded video
         time_of_upload: length,
         module_id: req.params.module_id,
