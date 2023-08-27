@@ -1,7 +1,7 @@
 const util = require("util");
 const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
-const getVideoDurationInSeconds = require('get-video-duration');
+const {getVideoDurationInSeconds} = require('get-video-duration');
 
 
 const {
