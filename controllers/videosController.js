@@ -1,6 +1,7 @@
 const util = require("util");
 const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
+const getVideoDurationInSeconds = require('get-video-duration');
 
 
 const {
@@ -76,22 +77,16 @@ async function create(req, res) {
       const videoFile = req.files.fileName[0];
 
       // Extract video duration using ffmpeg
-      const duration = await new Promise((resolve, reject) => {
-        ffmpeg.ffprobe(videoFile.path, (err, metadata) => {
-          if (err) {
-            reject(err);
-          } else {
-            const durationInSeconds = metadata.format.duration;
-            resolve(durationInSeconds);
-          }
-        });
-      });
+      const duration = await getVideoDurationInSeconds(videoFile.path);
+
+      const formattedDuration = formatDuration(duration);
+  
       
       const currentDate = new Date();
 
       const videoData = {
         name_of_video: req.body.name_of_video,
-        time_of_video: formatDuration(duration), // Format duration as HH:mm:ss        image: req.files.image[0].filename,
+        time_of_video: formattedDuration, // Format duration as HH:mm:ss        image: req.files.image[0].filename,
         fileName: req.files.fileName[0].filename,
         course_id: req.params.course_id,
         time_of_upload: currentDate,

@@ -21,6 +21,7 @@
     "ffmpeg": "^0.0.4",
     "ffprobe": "^1.1.2",
     "fluent-ffmpeg": "^2.1.2",
+    "get-video-duration": "^4.1.0",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "joi": "^17.9.2",
