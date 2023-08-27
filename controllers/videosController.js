@@ -1,6 +1,5 @@
 const util = require("util");
 const fs = require("fs");
-const ffmpeg = require("fluent-ffmpeg");
 
 const {
   getVideoById,
@@ -54,10 +53,10 @@ async function update(req, res) {
 
 async function create(req, res) {
   try {
-    const errors = req.validationErrors();
-    if (errors) {
-      return res.status(400).json({ errors: "error" });
-    }
+    // const errors = req.validationErrors();
+    // if (errors) {
+    //   return res.status(400).json({ errors: "error" });
+    // }
     if (await checkCourse(req.params.course_id)) {
       if (!req.files || !req.files.image) {
         // Check if image file exists
