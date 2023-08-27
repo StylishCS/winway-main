@@ -72,24 +72,16 @@ async function create(req, res) {
           errors: [{ msg: "Video or txt is Required" }],
         });
       }
-      let length;
-      ffmpeg.ffprobe(req.files.fileName[0].filename, (data, err) => {
-        if (err) {
-          console.log(err);
-        } else {
-          length = data.format;
-        }
-      });
-
+      const currentDate = new Date();
       // INSERT NEW Video or txt
       const videoData = {
         name_of_video: req.body.name_of_video,
         time_of_video: req.body.time_of_video,
-        image: req.files.filename, // Use the filename of the uploaded image
-        fileName: req.files.filename,
+        image: req.files.image[0].filename, // Use the filename of the uploaded image
+        fileName: req.files.fileName[0].filename,
         course_id: req.params.course_id, // Use the filename of the uploaded video
-        time_of_upload: length,
-        module_id: req.params.module_id,
+        time_of_upload: currentDate,
+        module_id: req.params.module_id
       };
       const module = await getModule(
         req.params.module_id,
