@@ -1,8 +1,8 @@
 const util = require("util");
-const ffmpeg = require('fluent-ffmpeg');
-const fs = require('fs');
-const {getVideoDurationInSeconds} = require('get-video-duration');
-
+const ffmpeg = require("fluent-ffmpeg");
+const fs = require("fs");
+const { getVideoDurationInSeconds } = require("get-video-duration");
+const moment = require("moment");
 
 const {
   getVideoById,
@@ -75,29 +75,40 @@ async function create(req, res) {
         });
       }
       const videoFile = req.files.fileName[0];
-
+      console.log(videoFile.path);
       // Extract video duration using ffmpeg
-      const duration = await getVideoDurationInSeconds(videoFile.path);
+      const duration = await new Promise((resolve, reject) => {
+        ffmpeg.ffprobe(videoFile.path, (err, metadata) => {
+          if (err) {
+            reject(err);
+          } else {
+            const durationInSeconds = metadata.format.duration;
+            resolve(durationInSeconds);
+          }
+        });
+      });
 
       const formattedDuration = formatDuration(duration);
-  
-      
+      const timeOfVideo = moment(formattedDuration, "HH:mm:ss").format(
+        "HH:mm:ss"
+      );
       const currentDate = new Date();
 
       const videoData = {
         name_of_video: req.body.name_of_video,
-        time_of_video: formattedDuration, // Format duration as HH:mm:ss        image: req.files.image[0].filename,
+        time_of_video: timeOfVideo, // Format duration as HH:mm:ss
+        image: req.files.image[0].filename,
         fileName: req.files.fileName[0].filename,
         course_id: req.params.course_id,
         time_of_upload: currentDate,
-        module_id: req.params.module_id
+        module_id: req.params.module_id,
       };
-      
+
       const module = await getModule(
         req.params.module_id,
         req.params.course_id
       );
-      
+
       if (module.length > 0) {
         const result = await createVideo(videoData, videoData.module_id);
         res.status(200).json({
@@ -125,7 +136,9 @@ function formatDuration(durationInSeconds) {
   const minutes = Math.floor((durationInSeconds % 3600) / 60);
   const seconds = Math.floor(durationInSeconds % 60);
 
-  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 }
 
 async function deleteV(req, res) {
