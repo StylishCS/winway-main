@@ -1,5 +1,7 @@
 const util = require("util");
 const fs = require("fs");
+const moment = require('moment');
+
 
 const {
   getVideoById,
@@ -73,11 +75,12 @@ async function create(req, res) {
       }
       
       const currentDate = new Date();
+
       const videoData = {
         name_of_video: req.body.name_of_video,
-        time_of_video: req.body.time_of_video,
-        image: req.files.image[0].filename, // Use the filename of the uploaded image
-        fileName: req.files.fileName[0].filename, // Use the filename of the uploaded video or txt file
+        time_of_video: moment().format('HH:mm:ss'), // Format current datetime as 'HH:MM:SS'
+        image: req.files.image[0].filename,
+        fileName: req.files.fileName[0].filename,
         course_id: req.params.course_id,
         time_of_upload: currentDate,
         module_id: req.params.module_id
