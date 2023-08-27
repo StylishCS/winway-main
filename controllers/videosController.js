@@ -55,11 +55,11 @@ async function update(req, res) {
 async function create(req, res) {
   try {
     const errors = req.validationErrors();
-    if (!errors) {
+    if (errors) {
       return res.status(400).json({ errors: "error" });
     }
     if (await checkCourse(req.params.course_id)) {
-      if (!req.files) {
+      if (!req.files || !req.files.image) {
         // Check if image file exists
         return res.status(400).json({
           errors: [{ msg: "Image is Required" }],
@@ -67,29 +67,32 @@ async function create(req, res) {
       }
 
       if (!req.files.fileName) {
-        // Check if image file exists
+        // Check if video or txt file exists
         return res.status(400).json({
           errors: [{ msg: "Video or txt is Required" }],
         });
       }
+      
       const currentDate = new Date();
-      // INSERT NEW Video or txt
       const videoData = {
         name_of_video: req.body.name_of_video,
         time_of_video: req.body.time_of_video,
         image: req.files.image[0].filename, // Use the filename of the uploaded image
-        fileName: req.files.fileName[0].filename,
-        course_id: req.params.course_id, // Use the filename of the uploaded video
+        fileName: req.files.fileName[0].filename, // Use the filename of the uploaded video or txt file
+        course_id: req.params.course_id,
         time_of_upload: currentDate,
         module_id: req.params.module_id
       };
+      
       const module = await getModule(
         req.params.module_id,
         req.params.course_id
       );
+      
       if (module.length > 0) {
+        const result = await createVideo(videoData, videoData.module_id);
         res.status(200).json({
-          msg: await createVideo(videoData, videoData.module_id),
+          msg: result,
         });
       } else {
         res.status(200).json({
