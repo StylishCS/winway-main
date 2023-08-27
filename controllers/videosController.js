@@ -1,6 +1,6 @@
 const util = require("util");
-const fs = require("fs");
-const moment = require('moment');
+const ffmpeg = require('fluent-ffmpeg');
+const fs = require('fs');
 
 
 const {
@@ -73,13 +73,25 @@ async function create(req, res) {
           errors: [{ msg: "Video or txt is Required" }],
         });
       }
+      const videoFile = req.files.fileName[0];
+
+      // Extract video duration using ffmpeg
+      const duration = await new Promise((resolve, reject) => {
+        ffmpeg.ffprobe(videoFile.path, (err, metadata) => {
+          if (err) {
+            reject(err);
+          } else {
+            const durationInSeconds = metadata.format.duration;
+            resolve(durationInSeconds);
+          }
+        });
+      });
       
       const currentDate = new Date();
 
       const videoData = {
         name_of_video: req.body.name_of_video,
-        time_of_video: moment().format('HH:mm:ss'), // Format current datetime as 'HH:MM:SS'
-        image: req.files.image[0].filename,
+        time_of_video: formatDuration(duration), // Format duration as HH:mm:ss        image: req.files.image[0].filename,
         fileName: req.files.fileName[0].filename,
         course_id: req.params.course_id,
         time_of_upload: currentDate,
@@ -110,6 +122,15 @@ async function create(req, res) {
     console.log(err);
     res.status(500).json(err);
   }
+}
+
+// Helper function to format duration as HH:mm:ss
+function formatDuration(durationInSeconds) {
+  const hours = Math.floor(durationInSeconds / 3600);
+  const minutes = Math.floor((durationInSeconds % 3600) / 60);
+  const seconds = Math.floor(durationInSeconds % 60);
+
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
 async function deleteV(req, res) {
