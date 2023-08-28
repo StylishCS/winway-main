@@ -367,7 +367,7 @@ router.delete("/deleteCourse/:id", protect, validate(), deleteC);
 
 router.get("/getCourse/:id", protect, validate(), showCourse);
 
-router.get("/getCourses", validate(), showCourses);
+router.get("/getCourses",protect, validate(), showCourses);
 
 router.get("/:collectionName", protect, validate(), getCollectioName);
 
