@@ -81,7 +81,8 @@
 var express = require("express");
 var router = express.Router();
 const {showCourses} = require('../controllers/studentController');
+const { protect } = require("../middleware/protect");
 
-router.get("/:student_id", showCourses);
+router.get("/:student_id", protect,showCourses);
 
 module.exports = router;
