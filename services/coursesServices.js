@@ -24,12 +24,29 @@ async function deleteCourse(id) {
 
 async function showcourses() {
   const query = util.promisify(connection.query).bind(connection);
-  return await query("select id, name, price, description, image from courses");
+  const result = await query(`
+  SELECT
+    courses.id,
+    courses.name,
+    courses.price,
+    courses.description,
+    courses.image,
+    COUNT(DISTINCT videos.id) AS num_of_videos,
+    AVG(reviews.rating) AS avg_rating,
+    COUNT(DISTINCT reviews.id) AS num_of_reviews
+  FROM courses
+  JOIN videos ON courses.id = videos.course_id
+  JOIN reviews ON courses.id = reviews.courseId
+  GROUP BY courses.id, courses.name, courses.price, courses.description, courses.image
+`);
+  return result;
 }
 
 async function searchCourses(search) {
   const query = util.promisify(connection.query).bind(connection);
-  return await query(`select id, name, price, description, image from courses ${search}`);
+  return await query(
+    `select id, name, price, description, image from courses ${search}`
+  );
 }
 
 async function getCollectionname(collectionName) {

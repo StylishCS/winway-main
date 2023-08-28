@@ -170,7 +170,7 @@ const reviewValidation = {
   }
 
 
-router.post('/:studentId/:courseId',protect,validate(reviewValidation, {}, {}),addReview)
+router.post('/:studentId/:courseId',validate(reviewValidation, {}, {}),addReview)
 router.get('/:courseId',protect,getReview )
 router.get('/one/:id',protect, getReviewOne)
 router.delete('/del/:id',protect, delet)

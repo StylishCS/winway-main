@@ -82,6 +82,6 @@ var express = require("express");
 var router = express.Router();
 const {showCourses} = require('../controllers/studentController');
 
-router.post("/:user_id", showCourses);
+router.get("/:student_id", showCourses);
 
 module.exports = router;

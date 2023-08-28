@@ -130,8 +130,8 @@ const { protect } = require("../middleware/protect");
  *           description: Number of videos watched from the course
  */
 
-router.post("/:studentId", protect, getCart);
+router.get("/:studentId", protect, getCart);
 router.post("/addCourse/:courseId/:studentId", protect, addToCart);
-router.post("/removeCourse/:courseId/:studentId", protect, removeFromCart);
+router.delete("/removeCourse/:courseId/:studentId", protect, removeFromCart);
 
 module.exports = router;

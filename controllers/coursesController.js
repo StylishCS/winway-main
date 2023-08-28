@@ -125,22 +125,10 @@ async function showCourses(req, res) {
       courses = await showcourses();
     }
     if (courses) {
-      const courseDataArr = [];
-      for (let i = 0; i < courses.length; i++) {
-        let rating = await getRating(courses[i].courseId);
-        let videos = await showvideos(courses[i].courseId);
-        let courseData = {
-          id: courses[i].id,
-          name: courses[i].name,
-          price: courses[i].price,
-          description: courses[i].description,
-          image: `https://winway.onrender.com/${courses[i].image}`,
-          rating: rating,
-          videos: videos.length,
-        };
-        courseDataArr.push(courseData);
-      }
-      res.status(200).json(courseDataArr);
+      courses.map(
+        (res) => (res.image = "https://winway.onrender.com/" + res.image)
+      );
+      res.status(200).json(courses);
     } else {
       res.status(404).json({ errors: ["No courses found"] });
     }
