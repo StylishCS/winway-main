@@ -8,6 +8,7 @@ const {
   showcourses,
   searchCourses,
   getCollectionname,
+  playCourse
 } = require("../services/coursesServices");
 const { getRating, showvideos } = require("../services/studentServices");
 
@@ -174,6 +175,21 @@ async function getCollectioName(req, res) {
     res.status(500).json({ errors: ["Internal server error"] });
   }
 }
+
+async function playcourse(req, res) {
+  try {
+    let courses = await playCourse(req.params.id);
+
+    if (courses) {
+      res.status(200).json(courses);
+    } else {
+      res.status(404).json({ errors: ["No courses found"] });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ errors: ["Internal server error"] });
+  }
+}
 module.exports = {
   update,
   create,
@@ -181,4 +197,5 @@ module.exports = {
   showCourses,
   showCourse,
   getCollectioName,
+  playcourse
 };

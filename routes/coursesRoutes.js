@@ -9,6 +9,7 @@ const {
   showCourse,
   showCourses,
   getCollectioName,
+  playcourse
 } = require("../controllers/coursesController");
 const { validate } = require("../validation/coursesValidation");
 
@@ -368,6 +369,8 @@ router.delete("/deleteCourse/:id", protect, validate(), deleteC);
 router.get("/getCourse/:id", protect, validate(), showCourse);
 
 router.get("/getCourses",protect, validate(), showCourses);
+
+router.get("/playCourse/:id", protect,validate(), playcourse);
 
 router.get("/:collectionName", protect, validate(), getCollectioName);
 
