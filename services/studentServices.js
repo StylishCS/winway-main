@@ -1,39 +1,30 @@
 const util = require("util");
 const { connection } = require("../db/dbConnection");
 
-// async function showcourses(studyId) {
-//     const query = util.promisify(connection.query).bind(connection);
-//     const cartItems = await query("SELECT courseId, num_of_videos_watched FROM cart WHERE studentId = ?", [studyId]);
-  
-//     let courses = [];
-//     for (let i = 0; i < cartItems.length; i++) {
-//       const course = await query("SELECT * FROM courses WHERE id = ?", [cartItems[i].courseId]);
-//       course.num_of_videos_watched = cartItems[i].num_of_videos_watched;
-//       course[0].image =
-//       "http://" + req.hostname + ":3000/" + course[0].image;
-//       courses.push(course);
-//     }
-  
-//     return courses;
-//   }
-async function showvideos(id) {
-    const query = util.promisify(connection.query).bind(connection);
-    return await query("select * from videos where course_id = ?", [id]);
-  }
 
-async function getRating(courseId) {
-    const query = util.promisify(connection.query).bind(connection);
-    const reviews = await query("SELECT rating FROM reviews WHERE courseId = ?", [courseId]);
-    if (reviews.length === 0) {
-      return 0; // No reviews found, return 0 rating
-    }
-    const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
-    const average = sum / reviews.length;
-    return average;
-  }
+async function showcourses(studentId){
+  const query = util.promisify(connection.query).bind(connection);
+  const result = await query(`
+    SELECT
+    courses.id,
+      courses.image,
+      courses.price,
+      courses.description,
+      courses.name,
+      AVG(reviews.rating) AS avg_rating,
+      COUNT(DISTINCT videos.id) AS num_of_videos
+    FROM courses
+    JOIN cart ON courses.id = cart.courseId
+    LEFT JOIN reviews ON courses.id = reviews.courseId
+    LEFT JOIN videos ON courses.id = videos.course_id
+    WHERE cart.studentId = ?
+    GROUP BY
+      courses.image,
+      courses.price,
+      courses.description,
+      courses.name
+  `, [studentId]);
 
-async function showcourses(studyId){
-    const query = util.promisify(connection.query).bind(connection);
-    return await query("SELECT courseId, num_of_videos_watched FROM cart WHERE studentId = ?", [studyId]);
+  return result;
 }
-module.exports = {showcourses, getRating, showvideos}
+module.exports = {showcourses}
